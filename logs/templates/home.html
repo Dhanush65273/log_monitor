@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Monitoring System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 85%;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p.subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Buttons */
+        a.button {
+            display: inline-block;
+            margin: 12px;
+            padding: 14px 28px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        a.button:hover {
+            background: #0056b3;
+        }
+
+        a.button.danger {
+            background: #dc3545;
+        }
+        a.button.danger:hover {
+            background: #b02a37;
+        }
+
+        a.button.dashboard {
+            background: #28a745;
+        }
+        a.button.dashboard:hover {
+            background: #1e7e34;
+        }
+
+        .status {
+            margin-top: 35px;
+            font-size: 15px;
+            color: #155724;
+            background: #d4edda;
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📊 Log Monitoring System</h1>
+    <p class="subtitle">
+        Real-time log ingestion, anomaly detection & alerting
+    </p>
+
+    <!-- Main actions -->
+    <a href="/logs/" class="button">📄 View All Logs</a>
+    <a href="/logs/filter/" class="button">🔍 Filter Logs</a>
+    <a href="/logs/send/" class="button">📤 Send Log</a>
+
+    <!-- Dashboard -->
+    <a href="/logs/dashboard/" class="button dashboard">📊 Dashboard</a>
+
+    <!-- Anomalies -->
+    <a href="/logs/anomalies/" class="button danger">🚨 Detected Anomalies</a>
+
+    <!-- <div class="status">
+        🟢 Anomaly Detection Status: <b>ACTIVE (Automatic)</b>
+    </div> -->
+</div>
+
+</body>
+</html>

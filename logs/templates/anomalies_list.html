@@ -1,0 +1,97 @@
+{% load tz %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anomalies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .container {
+            width: 95%;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            word-wrap: break-word;
+        }
+        th {
+            background: #dc3545;
+            color: white;
+        }
+        td:nth-child(5) {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .HIGH {
+            color: red;
+            font-weight: bold;
+        }
+        .MEDIUM {
+            color: orange;
+            font-weight: bold;
+        }
+        .LOW {
+            color: green;
+            font-weight: bold;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚨 Detected Anomalies</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Service</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Severity</th>
+        </tr>
+
+        {% for a in anomalies %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ a.timestamp|localtime }}</td>
+            <td>{{ a.service }}</td>
+            <td>{{ a.anomaly_type }}</td>
+            <td>{{ a.description }}</td>
+            <td class="{{ a.severity }}">{{ a.severity }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No anomalies detected</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="/">⬅ Back to Home</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitoring Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .card h2 {
+            margin: 10px 0;
+            font-size: 32px;
+        }
+        .blue { border-top: 5px solid #007bff; }
+        .red { border-top: 5px solid #dc3545; }
+        .orange { border-top: 5px solid #fd7e14; }
+        .green { border-top: 5px solid #28a745; }
+
+        .links {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .links a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📊 Monitoring Dashboard</h1>
+
+    <div class="cards">
+        <div class="card blue">
+            <p>Total Logs</p>
+            <h2>{{ total_logs }}</h2>
+        </div>
+
+        <div class="card red">
+            <p>ERROR Logs (Last 5 mins)</p>
+            <h2>{{ error_logs }}</h2>
+        </div>
+
+        <div class="card orange">
+            <p>Total Anomalies</p>
+            <h2>{{ anomaly_count }}</h2>
+        </div>
+
+        <div class="card green">
+            <p>Total Alerts Sent</p>
+            <h2>{{ alert_count }}</h2>
+        </div>
+    </div>
+
+    <div class="links">
+        <!-- <a href="/logs/">📄 View Logs</a>
+        <a href="/logs/anomalies/">🚨 View Anomalies</a> -->
+        <a href="/logs/alerts/">📧 View Alerts</a>
+        <!-- <a href="/logs/send/">📤 Send Log</a> -->
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+{% load tz %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Logs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .container {
+            width: 90%;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📄 All Logs</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Service</th>
+            <th>Level</th>
+            <th>Message</th>
+        </tr>
+
+        {% for log in logs %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ log.timestamp|localtime }}</td>
+            <td>{{ log.service }}</td>
+            <td>{{ log.log_level }}</td>
+            <td>{{ log.message }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No logs found</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="/">⬅ Back to Home</a>
+</div>
+
+</body>
+</html>

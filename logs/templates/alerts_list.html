@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alerts History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .container {
+            width: 95%;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #343a40;
+            color: white;
+        }
+        .HIGH { color: red; font-weight: bold; }
+        .MEDIUM { color: orange; font-weight: bold; }
+        .LOW { color: green; font-weight: bold; }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📧 Alert History</h1>
+
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Service</th>
+            <th>Anomaly Type</th>
+            <th>Severity</th>
+            <th>Channel</th>
+            <th>Sent At</th>
+        </tr>
+
+        {% for alert in alerts %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ alert.anomaly.service }}</td>
+            <td>{{ alert.anomaly.anomaly_type }}</td>
+            <td class="{{ alert.anomaly.severity }}">
+                {{ alert.anomaly.severity }}
+            </td>
+            <td>{{ alert.channel }}</td>
+            <td>{{ alert.sent_at }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No alerts sent yet</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/logs/dashboard/">⬅ Back to Dashboard</a>
+</div>
+
+</body>
+</html>

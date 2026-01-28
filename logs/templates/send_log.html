@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Log</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .container {
+            width: 50%;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .success {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .info {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e2e3e5;
+            color: #383d41;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📤 Send Log</h1>
+
+    {% if success %}
+        <div class="success">
+            ✅ Log sent successfully
+        </div>
+
+        <!-- 🔥 NEW: Direct link to anomalies -->
+        <a href="/logs/anomalies/">🚨 View Detected Anomalies</a>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Timestamp (UI only, backend uses server time) -->
+        <label>Timestamp</label>
+        <input type="datetime-local" name="timestamp" required>
+
+        <!-- Service -->
+        <label>Service</label>
+        <select name="service" id="serviceSelect" required onchange="toggleServiceInput()">
+            <option value="">-- Select a Service --</option>
+            <option value="api-service">api-service</option>
+            <option value="auth-service">auth-service</option>
+            <option value="database-service">database-service</option>
+            <option value="cache-service">cache-service</option>
+            <option value="payment-service">payment-service</option>
+            <option value="email-service">email-service</option>
+            <option value="web-ui">web-ui</option>
+            <option value="notification-service">notification-service</option>
+            <option value="memory-service">memory-service</option>
+            <option value="other">-- Other (specify below) --</option>
+        </select>
+        <input type="text" name="service_custom" id="serviceCustom"
+               placeholder="Enter custom service name"
+               style="display:none;margin-top:5px;">
+
+        <script>
+            function toggleServiceInput() {
+                const serviceSelect = document.getElementById('serviceSelect');
+                const serviceCustom = document.getElementById('serviceCustom');
+
+                if (serviceSelect.value === 'other') {
+                    serviceCustom.style.display = 'block';
+                    serviceCustom.required = true;
+                } else {
+                    serviceCustom.style.display = 'none';
+                    serviceCustom.required = false;
+                    serviceCustom.value = '';
+                }
+            }
+        </script>
+
+        <!-- Log level -->
+        <label>Log Level</label>
+        <select name="log_level" required>
+            <option value="INFO">INFO</option>
+            <option value="WARN">WARN</option>
+            <option value="ERROR">ERROR</option>
+        </select>
+
+        <!-- Message -->
+        <label>Message</label>
+        <select name="message" id="messageSelect" required onchange="toggleMessageInput()">
+            <option value="">-- Select a Message --</option>
+            <option value="Request processed successfully">✓ Request processed successfully</option>
+            <option value="User authentication successful">✓ User authentication successful</option>
+            <option value="Data retrieved from cache">✓ Data retrieved from cache</option>
+            <option value="Payment processed">✓ Payment processed</option>
+            <option value="Email sent successfully">✓ Email sent successfully</option>
+            <option value="Connection timeout">⚠ Connection timeout</option>
+            <option value="Memory usage 75%">⚠ Memory usage 75%</option>
+            <option value="Redis connection lost">⚠ Redis connection lost</option>
+            <option value="Retrying operation">⚠ Retrying operation</option>
+            <option value="Database query failed">✗ Database query failed</option>
+            <option value="Authentication failed">✗ Authentication failed</option>
+            <option value="Payment gateway timeout">✗ Payment gateway timeout</option>
+            <option value="Connection pool exhausted">✗ Connection pool exhausted</option>
+            <option value="JWT decode error">✗ JWT decode error</option>
+            <option value="other">-- Other (custom message) --</option>
+        </select>
+
+        <textarea name="message_custom" id="messageCustom"
+                  rows="4"
+                  placeholder="Enter custom message"
+                  style="display:none;margin-top:5px;"></textarea>
+
+        <script>
+            function toggleMessageInput() {
+                const messageSelect = document.getElementById('messageSelect');
+                const messageCustom = document.getElementById('messageCustom');
+
+                if (messageSelect.value === 'other') {
+                    messageCustom.style.display = 'block';
+                    messageCustom.required = true;
+                } else {
+                    messageCustom.style.display = 'none';
+                    messageCustom.required = false;
+                    messageCustom.value = '';
+                }
+            }
+        </script>
+
+        <button type="submit">Send Log</button>
+    </form>
+
+    <!-- 🔥 NEW: Auto detection info
+    <div class="info">
+        ℹ Anomalies are detected <b>automatically</b> when logs are sent.
+        Alerts are triggered if thresholds are crossed.
+    </div> -->
+
+    <a href="/">⬅ Back to Home</a>
+</div>
+
+</body>
+</html>
