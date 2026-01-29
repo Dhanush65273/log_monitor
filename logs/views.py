@@ -226,3 +226,16 @@ def alerts_page(request):
     return render(request, "alerts_list.html", {
         "alerts": alerts
     })
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import LogEntrySerializer
+
+@api_view(["POST"])
+def ingest_log(request):
+    serializer = LogEntrySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
