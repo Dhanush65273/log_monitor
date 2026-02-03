@@ -4,3 +4,5 @@ gunicorn
 pytest
 pytest-django
 psycopg2-binary
+resend
+whitenoise

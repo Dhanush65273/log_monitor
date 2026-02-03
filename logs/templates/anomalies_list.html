@@ -76,7 +76,7 @@
         {% for a in anomalies %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ a.timestamp|localtime }}</td>
+            <td>{{ a.timestamp|date:"d M Y, h:i A" }}</td>
             <td>{{ a.service }}</td>
             <td>{{ a.anomaly_type }}</td>
             <td>{{ a.description }}</td>

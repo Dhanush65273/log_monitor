@@ -1,27 +1,12 @@
-from django.core.mail import send_mail
 from django.conf import settings
-
+from django.core.mail import send_mail
 from .models import Alert
 
 
 def send_email_alert(anomaly):
-    """
-    Sends email ONLY ONCE per anomaly.
-    If already sent, skip.
-    """
-
-    # 🔥 CHECK: email already sent?
-    already_sent = Alert.objects.filter(
-        anomaly=anomaly,
-        channel="EMAIL"
-    ).exists()
-
-    if already_sent:
-        # ❌ Don't spam
-        print(f"Email already sent for anomaly {anomaly.id}")
-        return
 
     subject = f"[ALERT] {anomaly.anomaly_type}"
+
     message = f"""
 ⚠️ ANOMALY DETECTED ⚠️
 
@@ -34,19 +19,41 @@ Description:
 
 Time:
 {anomaly.timestamp}
+
+-- AI Log Monitoring System
 """
 
-    send_mail(
-        subject,
-        message,
-        settings.DEFAULT_FROM_EMAIL,
-        [settings.ALERT_RECEIVER_EMAIL],
-        fail_silently=False
-    )
+    try:
 
-    # ✅ Save alert record (IMPORTANT)
-    Alert.objects.create(
-        anomaly=anomaly,
-        channel="EMAIL",
-        status="SENT"
-    )
+        # Send mail using Gmail SMTP
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [settings.ALERT_RECEIVER_EMAIL],
+            fail_silently=False,
+        )
+
+        # Save alert status
+        Alert.objects.create(
+            anomaly=anomaly,
+            channel="EMAIL",
+            status="SENT"
+        )
+
+        print("✅ Email sent via Gmail SMTP")
+
+        return True
+
+
+    except Exception as e:
+
+        print("❌ Email error:", e)
+
+        Alert.objects.create(
+            anomaly=anomaly,
+            channel="EMAIL",
+            status="FAILED"
+        )
+
+        return False

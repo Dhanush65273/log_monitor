@@ -4,6 +4,8 @@ Django settings for log_monitor project.
 
 from pathlib import Path
 import os
+import ssl
+
 
 # --------------------------------------------------
 # BASE DIR
@@ -36,7 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # Local apps
-    'logs',
+    'logs.apps.LogsConfig',
 ]
 
 
@@ -45,6 +47,10 @@ INSTALLED_APPS = [
 # --------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # ✅ WhiteNoise for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,7 +97,7 @@ DATABASES = {
         "NAME": os.getenv("DB_NAME", "logdb"),
         "USER": os.getenv("DB_USER", "loguser"),
         "PASSWORD": os.getenv("DB_PASSWORD", "logpass"),
-        "HOST": os.getenv("DB_HOST", "db"),   # IMPORTANT: docker service name
+        "HOST": os.getenv("DB_HOST", "db"),
         "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
@@ -120,9 +126,15 @@ USE_TZ = True
 
 
 # --------------------------------------------------
-# STATIC FILES
+# STATIC FILES (ADMIN UI FIX)
 # --------------------------------------------------
 STATIC_URL = '/static/'
+
+# Where collectstatic puts files
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# WhiteNoise storage
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # --------------------------------------------------
@@ -131,17 +143,35 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# --------------------------------------------------
-# EMAIL CONFIG (ALERT SYSTEM)
-# --------------------------------------------------
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# ==================================================
+# EMAIL / ALERT CONFIG (GMAIL SMTP)
+# ==================================================
+
+EMAIL_BACKEND = "logs.custom_email_backend.CustomEmailBackend"
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
+
+# Your Gmail
 EMAIL_HOST_USER = "dd4494855@gmail.com"
-EMAIL_HOST_PASSWORD = "dgkxrkxmbqxmbmef"
+
+# App Password
+EMAIL_HOST_PASSWORD = "ywoaoqwggegiafbf"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+# Alert receiver
 ALERT_RECEIVER_EMAIL = "dd4494855@gmail.com"
+
+
+# ==================================================
+# SSL FIX (FOR DOCKER + GMAIL)
+# ==================================================
+
+EMAIL_SSL_CONTEXT = ssl.create_default_context()
+EMAIL_SSL_CONTEXT.check_hostname = False
+EMAIL_SSL_CONTEXT.verify_mode = ssl.CERT_NONE
