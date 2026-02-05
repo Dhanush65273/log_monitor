@@ -18,3 +18,10 @@ staticfiles/
 # OS
 .DS_Store
 Thumbs.db
+
+*.tar
+*.log
+__pycache__/
+db.sqlite3
+.env
+
