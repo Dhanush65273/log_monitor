@@ -1,27 +1,61 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Monitoring Dashboard</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f8;
             margin: 0;
         }
+
+        /* Top Navbar */
+        .navbar {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .home-btn {
+            background: #28a745;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .home-btn:hover {
+            background: #218838;
+        }
+
         .container {
             width: 90%;
             margin: 30px auto;
         }
+
         h1 {
             text-align: center;
             margin-bottom: 30px;
         }
+
         .cards {
             display: flex;
             justify-content: space-between;
             gap: 20px;
             flex-wrap: wrap;
         }
+
         .card {
             flex: 1;
             min-width: 200px;
@@ -31,10 +65,12 @@
             box-shadow: 0 0 8px rgba(0,0,0,0.1);
             text-align: center;
         }
+
         .card h2 {
             margin: 10px 0;
             font-size: 32px;
         }
+
         .blue { border-top: 5px solid #007bff; }
         .red { border-top: 5px solid #dc3545; }
         .orange { border-top: 5px solid #fd7e14; }
@@ -44,6 +80,7 @@
             text-align: center;
             margin-top: 40px;
         }
+
         .links a {
             display: inline-block;
             margin: 10px;
@@ -53,17 +90,30 @@
             text-decoration: none;
             border-radius: 5px;
         }
+
         .links a:hover {
             background: #0056b3;
         }
     </style>
 </head>
+
 <body>
 
+<!-- Top Navbar -->
+<div class="navbar">
+    <h2>Monitoring System</h2>
+
+    <!-- Correct Home Link -->
+    <a href="{% url 'home' %}" class="home-btn">🏠 Home</a>
+</div>
+
+
 <div class="container">
+
     <h1>📊 Monitoring Dashboard</h1>
 
     <div class="cards">
+
         <div class="card blue">
             <p>Total Logs</p>
             <h2>{{ total_logs }}</h2>
@@ -83,14 +133,16 @@
             <p>Total Alerts Sent</p>
             <h2>{{ alert_count }}</h2>
         </div>
+
     </div>
 
+
     <div class="links">
-        <!-- <a href="/logs/">📄 View Logs</a>
-        <a href="/logs/anomalies/">🚨 View Anomalies</a> -->
+
         <a href="/logs/alerts/">📧 View Alerts</a>
-        <!-- <a href="/logs/send/">📤 Send Log</a> -->
+
     </div>
+
 </div>
 
 </body>
