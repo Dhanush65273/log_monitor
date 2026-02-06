@@ -1,19 +1,22 @@
+version: "3.9"
+
 services:
+
   db:
     image: postgres:15
     container_name: log_monitor_db
+    restart: always
     environment:
-      POSTGRES_DB: logdb
-      POSTGRES_USER: loguser
-      POSTGRES_PASSWORD: logpass
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # ❌ ports removed to avoid 5432 conflict
-    # Django will connect via Docker network using service name "db"
 
   web:
     build: .
     container_name: log_monitor_web
+    restart: always
     command: gunicorn log_monitor.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
@@ -21,12 +24,8 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      DB_NAME: logdb
-      DB_USER: loguser
-      DB_PASSWORD: logpass
-      DB_HOST: db
-      DB_PORT: 5432
+    env_file:
+      - .env
 
 volumes:
   postgres_data:
