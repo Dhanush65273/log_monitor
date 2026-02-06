@@ -1,17 +1,13 @@
-# 🔄 Flow Diagrams
+# 🔄 System Workflow Diagram
 
-Visual guide to main system workflows.
-
----
-
-## 1️⃣ System Architecture
+This diagram shows how logs are processed and alerts are generated.
 
 ```mermaid
 graph TB
     USER["👤 User / Application"]
     API["🔌 Log API"]
     BACKEND["🐍 Django Backend"]
-    DB[(🗄️ PostgreSQL)]
+    DB[(🗄️ Database)]
     DETECTOR["🔍 Anomaly Detector"]
     EMAIL["📧 Email Alert"]
     DASH["📊 Dashboard"]
@@ -23,11 +19,5 @@ graph TB
     DETECTOR --> EMAIL
     DB --> DASH
 
-
-graph LR
-    A["⏰ Every 5 min"] --> B["🔍 Detector"]
-    B --> C["Count ERROR Logs"]
-    C --> D{{"Errors ≥ 5 ?"}}
-    D -->|No| E["✅ Continue Monitoring"]
-    D -->|Yes| F["⚠️ Trigger Alert"]
-    F --> G["📧 Send Email"]
+    DETECTOR -->|Every 5 min| DB
+    DB -->|Count Errors| DETECTOR
